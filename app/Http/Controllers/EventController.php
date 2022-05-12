@@ -25,10 +25,12 @@ class EventController extends Controller
             $singleEvent = Event::select("id_event","nama_event", "cara_pelaksanaan", "tempat_pelaksanaan","link","jam_mulai", "jam_selesai", "laporan_akhir", "background", "flyer", "file_proposal")->leftJoin('pic', 'event.id_pic', '=', 'pic.id_pic')->leftJoin('proposal', 'event.id_proposal', '=', 'proposal.id_proposal')->where('id_event', $id)->with('pembicara')->get()->first();
             // dd($singleEvent); //pake Event karena ada relasi di model Event
             $event = Event::select('*')->leftJoin('pic', 'event.id_pic', '=', 'pic.id_pic')->leftJoin('proposal', 'event.id_proposal', '=', 'proposal.id_proposal')->with('pembicara')->get();
+            $pembicaraDanEvent = PembicaraDanEvent::all();
             return view('dashboard-admin.event.detail-event.detail-event',[
-            'title' => 'Data Event - Pradita University\'s Guest Lecturers',
-            'event' => $event,
-            'singleEvent' => $singleEvent,
+                'title' => 'Data Event - Pradita University\'s Guest Lecturers',
+                'event' => $event,
+                'singleEvent' => $singleEvent,
+                'pembicaraDanEvent' => $pembicaraDanEvent
             ]);
         }else{
             $event = Event::select('*')->leftJoin('pic', 'event.id_pic', '=', 'pic.id_pic')->leftJoin('proposal', 'event.id_proposal', '=', 'proposal.id_proposal')->with('pembicara')->get();
@@ -138,7 +140,7 @@ class EventController extends Controller
             'title' => 'Edit Event - Pradita University\'s Guest Lecturers',
             'event' => $event,
             'pic' => $pic,
-            'proposal' => $proposal
+            'proposal' => $proposal,
         ]);
 
     }
@@ -159,6 +161,16 @@ class EventController extends Controller
         return view('dashboard-admin.event.edit-laporan-akhir.edit-laporan-akhir',[
             'title' => 'Edit Laporan Akhir - Pradita University\'s Guest Lecturers',
             'event' => $event
+        ]);
+    }
+
+    public function editSertifikat($id, $id1){
+        $pembicaraDanEvent = DB::select('SELECT * FROM event NATURAL LEFT JOIN pembicara_dan_event, pembicara WHERE pembicara_dan_event.id_pembicara = pembicara.id_pembicara AND event.id_event = ? AND pembicara.id_pembicara = ?', [$id, $id1]);
+        // $pembicaraDanEvent = PembicaraDanEvent::where('id_event', $id)->where('id_pembicara', $id1)->get()->first();
+        // dd($pembicaraDanEvent);
+        return view('dashboard-admin.event.edit-sertifikat.edit-sertifikat',[
+            'title' => 'Edit Sertifikat - Pradita University\'s Guest Lecturers',
+            'pembicaraDanEvent' => $pembicaraDanEvent
         ]);
     }
 
@@ -237,11 +249,6 @@ class EventController extends Controller
             'oldlaporan_akhir' => 'nullable'
         ]);
 
-        // $proposal = [
-        //     'laporan_akhir' => $request->file('laporan_akhir')->store('laporan_akhir'),
-        //     // ->getClientOriginalName(),
-        // ];
-
         if($request->file('laporan_akhir')){
             $laporan_akhir = $request->file('laporan_akhir');
             $laporan_akhir_name = $laporan_akhir->getClientOriginalName();
@@ -258,9 +265,35 @@ class EventController extends Controller
         }
 
         // dd($laporan_akhir_update);
-        // Storage::delete($request->oldlaporan_akhir);
+
         Event::where('id_event',$id)->update($laporan_akhir_update);
         return redirect()->route('event.index')->with('success', 'Data Laporan Akhir has been updated successfully');
+    }
+
+    public function updateSertifikat(Request $request, $id_event, $id_pembicara){
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'sertifikat' => 'required|mimes:pdf,png,jpg,jpeg|max:2048',
+            'oldsertifikat' => 'nullable'
+        ]);
+
+        if($request->file('sertifikat')){
+            $sertifikat = $request->file('sertifikat');
+            $sertifikat_name = $sertifikat->getClientOriginalName();
+            $sertifikat->move(public_path('/penyimpanan/sertifikat'), $sertifikat_name);
+            $sertifikat_path = "/penyimpanan/sertifikat/" . $sertifikat_name;
+            $validatedData['sertifikat'] = $sertifikat_path;
+            $sertifikat_update = [
+                'sertifikat' => $validatedData['sertifikat']
+            ];
+            if($request->oldsertifikat){
+                $oldsertifikat = $request->oldsertifikat;
+                unlink(public_path($oldsertifikat));
+            }
+        }
+
+        PembicaraDanEvent::where('id_event',$id_event)->where('id_pembicara', $id_pembicara)->update($sertifikat_update);
+        return redirect()->route('event.index')->with('success', 'Data Sertifikat has been updated successfully');
     }
 
     /**
@@ -284,6 +317,10 @@ class EventController extends Controller
 
     public function destroyPembicara($id_event, $id_pembicara)
     {
+        $pembicaraDanEvent = PembicaraDanEvent::where('id_event', $id_event)->where('id_pembicara', $id_pembicara)->get()->first();
+        if($pembicaraDanEvent->sertifikat != null){
+            unlink(public_path($pembicaraDanEvent->sertifikat));
+        }
         PembicaraDanEvent::where('id_event', $id_event)->where('id_pembicara', $id_pembicara)->delete();
         return redirect()->route('event.index')->with('success', 'Data Pembicara has been deleted successfully');
     }

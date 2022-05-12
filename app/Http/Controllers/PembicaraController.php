@@ -63,7 +63,7 @@ class PembicaraController extends Controller
             'cv' => 'required|file|mimes:pdf,docx,doc|max:3072',
             'npwp' => 'nullable|numeric',
             'no_rekening' => 'nullable|numeric',
-            'sertifikat' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:3072',
+            // 'sertifikat' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:3072',
             'bank' => 'nullable|string',
         ]);
 
@@ -89,14 +89,14 @@ class PembicaraController extends Controller
             'bank' => $validatedData['bank'],
         ];
 
-        if($request->sertifikat != null){
-            $sertifikat = $request->file('sertifikat');
-            $sertifikat_name = $sertifikat->getClientOriginalName();
-            $sertifikat->move(public_path('/penyimpanan/sertifikat'), $sertifikat_name);
-            $sertifikat_path = "/penyimpanan/sertifikat/" . $sertifikat_name;
-            $validatedData['sertifikat'] = $sertifikat_path;
-            $pembicara['sertifikat'] = $validatedData['sertifikat'];
-        }
+        // if($request->sertifikat != null){
+        //     $sertifikat = $request->file('sertifikat');
+        //     $sertifikat_name = $sertifikat->getClientOriginalName();
+        //     $sertifikat->move(public_path('/penyimpanan/sertifikat'), $sertifikat_name);
+        //     $sertifikat_path = "/penyimpanan/sertifikat/" . $sertifikat_name;
+        //     $validatedData['sertifikat'] = $sertifikat_path;
+        //     $pembicara['sertifikat'] = $validatedData['sertifikat'];
+        // }
 
         if($request->npwp != null){
             $pembicara['npwp'] = $validatedData['npwp'];
@@ -152,8 +152,8 @@ class PembicaraController extends Controller
             'oldcv' => 'required',
             'npwp' => 'nullable|numeric',
             'no_rekening' => 'nullable|numeric',
-            'sertifikat' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:3072',
-            'oldsertifikat' => 'nullable',
+            // 'sertifikat' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:3072',
+            // 'oldsertifikat' => 'nullable',
             'bank' => 'nullable|string',
         ]);
 
@@ -192,18 +192,18 @@ class PembicaraController extends Controller
             }
         }
 
-        if($request->file('sertifikat')){
-            $sertifikat = $request->file('sertifikat');
-            $sertifikat_name = $sertifikat->getClientOriginalName();
-            $sertifikat->move(public_path('/penyimpanan/sertifikat'), $sertifikat_name);
-            $sertifikat_path = "/penyimpanan/sertifikat/" . $sertifikat_name;
-            $validatedData['sertifikat'] = $sertifikat_path;
-            $pembicara['sertifikat'] = $validatedData['sertifikat'];
-            if($request->oldsertifikat){
-                $oldsertifikat = $request->oldsertifikat;
-                unlink(public_path($oldsertifikat));
-            }
-        }
+        // if($request->file('sertifikat')){
+        //     $sertifikat = $request->file('sertifikat');
+        //     $sertifikat_name = $sertifikat->getClientOriginalName();
+        //     $sertifikat->move(public_path('/penyimpanan/sertifikat'), $sertifikat_name);
+        //     $sertifikat_path = "/penyimpanan/sertifikat/" . $sertifikat_name;
+        //     $validatedData['sertifikat'] = $sertifikat_path;
+        //     $pembicara['sertifikat'] = $validatedData['sertifikat'];
+        //     if($request->oldsertifikat){
+        //         $oldsertifikat = $request->oldsertifikat;
+        //         unlink(public_path($oldsertifikat));
+        //     }
+        // }
 
         Pembicara::where('id_pembicara',$id)->update($pembicara);
 
@@ -221,9 +221,9 @@ class PembicaraController extends Controller
         $pembicara = Pembicara::where('id_pembicara',$id)->get()->first();
         unlink(public_path($pembicara->foto));
         unlink(public_path($pembicara->cv));
-        if($pembicara->sertifikat != null){
-            unlink(public_path($pembicara->sertifikat));
-        }
+        // if($pembicara->sertifikat != null){
+        //     unlink(public_path($pembicara->sertifikat));
+        // }
         Pembicara::where('id_pembicara',$id)->delete();
         return redirect()->intended(route('pembicara.index'))->with('success', 'Pembicara has been successfully deleted');
     }

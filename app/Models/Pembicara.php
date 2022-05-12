@@ -19,7 +19,6 @@ class Pembicara extends Model
         'cv',
         'npwp',
         'no_rekening',
-        'sertifikat',
         'bank'
     ];
 

@@ -13,6 +13,7 @@ class PembicaraDanEvent extends Model
 
     protected $fillable = [
         'id_pembicara',
-        'id_event'
+        'id_event',
+        'sertifikat'
     ];
 }

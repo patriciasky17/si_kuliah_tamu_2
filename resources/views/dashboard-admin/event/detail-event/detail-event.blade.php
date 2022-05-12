@@ -93,7 +93,7 @@
                                     @endforelse
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a class="btn btn-sm btn-outline-info" href="{{ route('event.index') . '?id_event=' . $e->id_event  }}">Detail</a>
+                                    <a class="btn btn-sm btn-outline-info" href="{{ route('event.index') . '?id_event=' . $e->id_event}}">Detail</a>
                                     <a class="btn btn-sm btn-outline-warning" href="{{ route('event.edit', $e->id_event) }}">Edit</a>
                                     <form action="{{ route("event.destroy", $e->id_event)}}" method="POST">
                                         @csrf
@@ -155,11 +155,15 @@
                                 @forelse ($singleEvent->pembicara as $p)
                                 <div class="d-flex justify-content-between align-content-center" style="margin-bottom: 5px">
                                     {{ $p->nama }}<br>
-                                    <form action="/admin/event/{{$singleEvent->id_event}}/pembicara/{{$p->id_pembicara}}" method="POST">
-                                        @csrf
-                                        @method("DELETE")
-                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')" type="submit">Delete</button>
-                                    </form>
+                                    <div class="d-flex">
+                                        <a class="btn btn-sm btn-outline-warning" href="{{ route("event.editSertifikat", [$singleEvent->id_event, $p->id_pembicara]) }}">Tambah Sertifikat</a>
+                                        <form action="/admin/event/{{$singleEvent->id_event}}/pembicara/{{$p->id_pembicara}}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')" type="submit">Delete</button>
+                                        </form>
+                                    </div>
+
                                 </div>
                                 @empty
                                 @endforelse

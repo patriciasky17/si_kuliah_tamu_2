@@ -61,6 +61,9 @@ Route::post('/admin/event/pembicara', [EventController::class, 'storePembicara']
 Route::get('/admin/event/pembicara/{id}', [EventController::class, 'editPembicara'])->name('event.editPembicara')->middleware('admin');
 Route::delete('/admin/event/{id_event}/pembicara/{id_pembicara}', [EventController::class, 'destroyPembicara'])->name('event.destroyPembicara')->middleware('admin');
 
+Route::get('/admin/event/{id_event}/sertifikat/{id_pembicara}', [EventController::class, 'editSertifikat'])->name('event.editSertifikat')->middleware('admin');
+Route::put('/admin/event/{id_event}/sertifikat/{id_pembicara}', [EventController::class, 'updateSertifikat'])->name('event.updateSertifikat')->middleware('admin');
+
 Route::get('/admin/event/laporanakhir/{id}', [EventController::class, 'editLaporanAkhir'])->name('event.editLaporanAkhir')->middleware('admin');
 Route::put('/admin/event/laporanakhir/{id}', [EventController::class, 'updateLaporanAkhir'])->name('event.updateLaporanAkhir')->middleware('admin');
 
