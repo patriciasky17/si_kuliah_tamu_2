@@ -31,25 +31,32 @@
                             <label for="inputFotoDokumentasi1" class="col-sm-2 col-form-label">Foto 1</label>
                             <div class="col-sm-10">
                                 <input class="form-control" type="hidden" name='oldfoto_1' value='{{ $documentation[0]->foto != NULL ? $documentation[0]->foto : '' }}'>
+                                <input class="form-control" type="hidden" name='id_foto_1' value='{{ $documentation[0]->id_foto != NULL ? $documentation[0]->id_foto : '' }}'>
                                 <input class="form-control" type="file" id="inputFotoDokumentasi1" name='foto_1'>
                                 @error('foto_1')
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
                                 @if ($documentation[0]->foto)
-                                    {{ 'Ini adalah fotonya yang telah di upload ' . $documentation[0]->foto }}
+                                    {{ 'Foto yang diupload sebelumnya : ' . $documentation[0]->foto }}
                                 @endif
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputFotoDokumentasi2" class="col-sm-2 col-form-label">Foto 2</label>
                             <div class="col-sm-10">
+                                @if (count($documentation) > 1)
                                 <input class="form-control" type="hidden" name='oldfoto_2' value='{{ $documentation[1]->foto != NULL ? $documentation[1]->foto : '' }}'>
+                                <input class="form-control" type="hidden" name='id_foto_2' value='{{ $documentation[1]->id_foto != NULL ? $documentation[1]->id_foto : '' }}'>
+                                @endif
+
                                 <input class="form-control" type="file" id="inputFotoDokumentasi2" name='foto_2'>
                                 @error('foto_2')
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
+                                @if (count($documentation) > 1)
                                 @if ($documentation[1]->foto)
-                                    {{ 'Ini adalah fotonya yang telah di upload ' . $documentation[1]->foto }}
+                                    {{ 'Foto yang diupload sebelumnya :  ' . $documentation[1]->foto }}
+                                @endif
                                 @endif
                             </div>
                         </div>
@@ -71,7 +78,7 @@
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
                                 @if ($documentation[0]->feedback)
-                                    {{ 'Ini adalah dokumen yang telah di upload ' . $documentation[0]->feedback }}
+                                    {{ 'Dokumen feedback yang diupload sebelumnya : ' . $documentation[0]->feedback }}
                                 @endif
                             </div>
                         </div>

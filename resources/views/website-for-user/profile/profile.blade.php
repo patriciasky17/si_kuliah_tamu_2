@@ -5,41 +5,33 @@
 
 @section('main')
 <div class="container" style="margin-top:150px; margin-bottom:30px; background-color: rgb(250, 250, 250); border-radius: 30px; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);">
-    <div class="container">
-        <h4>Profile Mahasiswa</h4>
+    <div class="container" style="padding-bottom: 30px">
+        <h4 style="padding-top: 30px">Profile Mahasiswa</h4>
         <br>
         <div class="mb-3 row">
             <label for="" class="col-sm-2 col-form-label" style="margin-top: 20px;"><b>NIM</b></label>
             <div class="col-sm-10">
-            <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->nim }}</label>
+                <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->nim }}</label>
             </div>
-        </div>
 
-        <div class="mb-3 row">
             <label for="" class="col-sm-2 col-form-label" style="margin-top: 20px;"><b>Nama Mahasiswa</b></label>
             <div class="col-sm-10">
-            <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->nama_mahasiswa}}</label>
+                <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->nama_mahasiswa}}</label>
             </div>
-        </div>
 
-        <div class="mb-3 row">
             <label for="" class="col-sm-2 col-form-label" style="margin-top: 20px;"><b>Jenis Kelamin</b></label>
             <div class="col-sm-10">
-            <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->jenis_kelamin }}</label>
+                <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->jenis_kelamin }}</label>
             </div>
-        </div>
 
-        <div class="mb-3 row">
             <label for="" class="col-sm-2 col-form-label" style="margin-top: 20px;"><b>Prodi</b></label>
             <div class="col-sm-10">
-            <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->prodi }}</label>
+                <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->prodi }}</label>
             </div>
-        </div>
 
-        <div class="mb-3 row">
             <label for="" class="col-sm-2 col-form-label" style="margin-top: 20px;"><b>Angkatan</b></label>
             <div class="col-sm-10">
-            <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->angkatan }}</label>
+                <label class="col-form-label col-sm-10" style="margin-top: 20px;">{{ $mahasiswa->angkatan }}</label>
             </div>
         </div>
 

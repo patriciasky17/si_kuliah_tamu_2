@@ -91,7 +91,7 @@
 
             <div class="row">
                 <div class="col-md-4 col-sm-12 d-flex justify-content-center">
-                    <img class="img-fluid  mx-auto  pembicara-photo" src="{{ asset("storage/" . $singlePembicara[0]->foto) }}">
+                    <img class="img-fluid  mx-auto  pembicara-photo" src="{{ asset($singlePembicara[0]->foto) }}">
                 </div>
                 <div class="col-md-8 col-sm-12">
                     <div class="bg-light rounded h-100">
@@ -104,19 +104,44 @@
                             <dd class="col-sm-8">{{ $singlePembicara[0]->jabatan }}</dd>
 
                             <dt class="col-sm-4">NPWP</dt>
-                            <dd class="col-sm-8">{{ $singlePembicara[0]->npwp }}</dd>
+                            <dd class="col-sm-8">
+                                @if ($singlePembicara[0]->npwp == null)
+                                    -
+                                @else
+                                {{ $singlePembicara[0]->npwp }}
+                                @endif
+
+                            </dd>
 
                             <dt class="col-sm-4">Bank</dt>
-                            <dd class="col-sm-8">{{ $singlePembicara[0]->bank }}</dd>
+                            <dd class="col-sm-8">
+                                @if ($singlePembicara[0]->bank == null)
+                                    -
+                                @else
+                                {{ $singlePembicara[0]->bank }}
+                                @endif
+                            </dd>
 
                             <dt class="col-sm-4">No. Rekening</dt>
-                            <dd class="col-sm-8">{{ $singlePembicara[0]->no_rekening }}</dd>
+                            <dd class="col-sm-8">
+                                @if ($singlePembicara[0]->no_rekening == null)
+                                    -
+                                @else
+                                {{ $singlePembicara[0]->no_rekening }}
+                                @endif
+                            </dd>
 
                             <dt class="col-sm-4">CV</dt>
-                            <dd class="col-sm-8"><a class="btn btn-sm btn-outline-warning" href="{{ route('download.pdfCV', substr($singlePembicara[0]->cv,3)) }}">Download CV</a></dd>
+                            <dd class="col-sm-8"><a class="btn btn-sm btn-outline-warning" href="{{ route('download.index') }}?file={{ $singlePembicara[0]->cv }}">Download CV</a></dd>
 
                             <dt class="col-sm-4">Sertifikat</dt>
-                            <dd class="col-sm-8"><a class="btn btn-sm btn-outline-warning" href="{{ route('download.photoSertifikat', substr($singlePembicara[0]->sertifikat,11)) }}">Download Sertifikat</a></dd>
+                            <dd class="col-sm-8">
+                                @if ($singlePembicara[0]->sertifikat == null)
+                                    -
+                                @else
+                                <a class="btn btn-sm btn-outline-warning" href="{{ route('download.index') }}?file={{ $singlePembicara[0]->sertifikat }}">Download Sertifikat</a>
+                                @endif
+                            </dd>
                         </dl>
                     </div>
                 </div>

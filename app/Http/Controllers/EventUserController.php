@@ -25,7 +25,7 @@ class EventUserController extends Controller
     {
         $pembicara = DB::select('SELECT pembicara.*, event.id_event, pembicara.nama, event.nama_event, event.cara_pelaksanaan, event.tempat_pelaksanaan, event.tanggal_pelaksanaan, event.jam_mulai, event.jam_selesai FROM pembicara, pembicara_dan_event, event WHERE pembicara.id_pembicara = pembicara_dan_event.id_pembicara AND pembicara_dan_event.id_event = event.id_event AND pembicara.id_pembicara = ?', [$id]);
         return view('website-for-user.event.pembicara',[
-            'title' => 'Event - Pradita University\'s Guest Lecturers',
+            'title' => 'Pembicara - Pradita University\'s Guest Lecturers',
             'pembicara' => $pembicara,
         ]);
     }

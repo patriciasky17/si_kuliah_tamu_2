@@ -14,7 +14,7 @@
     <h5 style="margin-bottom: 30px;">SPEAKER</h5>
     <div class="row">
         <div class="col-md-6 col-sm-12 col-12">
-            <img src = "http://www.summarecon.com/public/images/gallery/87/pradita-1.jpg" alt= "foto" class ="pembicara-photo">
+            <img src = "{{ $pembicara[0]->foto }}" alt= "foto" class ="pembicara-photo">
         </div>
 
         <div class="col-md-6 col-sm-12 col-12" style="margin-bottom: 30px">
@@ -86,13 +86,13 @@
         </table>
     </div>
 
-    {{-- <div class="row">
+    <div class="row">
         <div class="button">
             <div class="col-12 button-back-to-article" style="margin-bottom : 20px;">
                 <a><button class="button-for-back" onclick="history.back()">Back</button></a>
             </div>
         </div>
-    </div> --}}
+    </div>
 
 </div>
 @endsection

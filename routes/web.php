@@ -65,15 +65,16 @@ Route::get('/admin/event/laporanakhir/{id}', [EventController::class, 'editLapor
 Route::put('/admin/event/laporanakhir/{id}', [EventController::class, 'updateLaporanAkhir'])->name('event.updateLaporanAkhir')->middleware('admin');
 
 //Download Images
-Route::get('/downloadfoto/{image}', [DownloadController::class, 'photoDokumentasi'])->name('download.photoDokumentasi')->middleware('guest');
-Route::get('/downloadpdf/{image}', [DownloadController::class, 'pdfDokumentasi'])->name('download.pdfDokumentasi')->middleware('guest');
-Route::get('/downloadbackground/{image}', [DownloadController::class, 'photoBackground'])->name('download.photoBackground')->middleware('guest');
-Route::get('/downloadflyer/{image}', [DownloadController::class, 'photoFlyer'])->name('download.photoFlyer')->middleware('guest');
-Route::get('/downloadlaporanakhir/{image}', [DownloadController::class, 'pdfLaporanAkhir'])->name('download.pdfLaporanAkhir')->middleware('guest');
-Route::get('/downloadpembicara/{image}', [DownloadController::class, 'photoPembicara'])->name('download.photoPembicara')->middleware('guest');
-Route::get('/downloadcv/{image}', [DownloadController::class, 'pdfCV'])->name('download.pdfCV')->middleware('guest');
-Route::get('/downloadsertifikat/{image}', [DownloadController::class, 'photoSertifikat'])->name('download.photoSertifikat')->middleware('guest');
-Route::get('/downloadproposal/{image}', [DownloadController::class, 'pdfProposal'])->name('download.pdfProposal')->middleware('guest');
+// Route::get('/downloadfoto/{image}', [DownloadController::class, 'photoDokumentasi'])->name('download.photoDokumentasi')->middleware('guest');
+// Route::get('/downloadpdf/{image}', [DownloadController::class, 'pdfDokumentasi'])->name('download.pdfDokumentasi')->middleware('guest');
+// Route::get('/downloadbackground/{image}', [DownloadController::class, 'photoBackground'])->name('download.photoBackground')->middleware('guest');
+// Route::get('/downloadflyer/{image}', [DownloadController::class, 'photoFlyer'])->name('download.photoFlyer')->middleware('guest');
+// Route::get('/downloadlaporanakhir/{image}', [DownloadController::class, 'pdfLaporanAkhir'])->name('download.pdfLaporanAkhir')->middleware('guest');
+// Route::get('/downloadpembicara/{image}', [DownloadController::class, 'photoPembicara'])->name('download.photoPembicara')->middleware('guest');
+// Route::get('/downloadcv/{image}', [DownloadController::class, 'pdfCV'])->name('download.pdfCV')->middleware('guest');
+// Route::get('/downloadsertifikat/{image}', [DownloadController::class, 'photoSertifikat'])->name('download.photoSertifikat')->middleware('guest');
+// Route::get('/downloadproposal/{image}', [DownloadController::class, 'pdfProposal'])->name('download.pdfProposal')->middleware('guest');
+Route::get('/download',[DownloadController::class, 'index'])->name('download.index');
 
 // Dashboard User
 Route::get('/user/about', [DashboardUserController::class, 'index'])->name('dashboarduser.index');

@@ -1,6 +1,10 @@
 @extends('website-for-user.partials-main.main')
 @section('css')
     <link rel="stylesheet" href="/assets-user/css/style-index.css">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 @endsection
 
 @section('main')
@@ -29,6 +33,52 @@
     </div>
 
     <!-- End of Carousel -->
+    <br>
+    <br>
+
+    {{-- Summary Mulai --}}
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-line fa-3x text-warning"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Jumlah Kuliah Tamu</p>
+                        <h6 class="mb-0">{{ $event[0]->jumlah_kuliah_tamu }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-bar fa-3x text-warning"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Jumlah Mahasiswa</p>
+                        <h6 class="mb-0">{{ $mahasiswa[0]->jumlah_mahasiswa }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-area fa-3x text-warning"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Jumlah Artikel Post</p>
+                        <h6 class="mb-0">{{ $posts[0]->jumlah_post }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-pie fa-3x text-warning"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Jumlah Dokumentasi</p>
+                        <h6 class="mb-0">{{ $dokumentasi[0]->jumlah_dokumentasi }}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Summary Selesai --}}
 
     <br>
     <br>

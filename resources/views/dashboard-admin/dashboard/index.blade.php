@@ -53,12 +53,17 @@
             <p><b>Selamat datang di dashboard admin kuliah tamu Pradita University!</b></p>
             <p>Silahkan ikuti petunjuk berikut untuk mendata event</p>
             <ol>
-                <li>Daftarkan terlebih dahulu proposal</li>
-                <li>Daftarkan pembicara yang ada dalam event.<b>*</b></li>
+                <li>Masukkan terlebih dahulu proposal</li>
                 <li>Masukkan PIC yang bersangkutan dalam event tersebut.<b>*</b></li>
-                <li>Masukkan data event kuliah tamu yang akan diselenggarakan</li>
+                <li>Masukkan data event kuliah tamu yang akan diselenggarakan (dibagian ini admin perlu menaruh proposal yang bersangkutan)</li>
+                <li>Daftarkan pembicara yang bersangkutan<b>*</b></li>
+                <li>Masukkan pembicara ke dalam event tertentu<b>**</b></li>
             </ol>
-            <p><i><b>*</b> = Jika sudah ditambahkan sebelumnya, maka tahap ini bisa dilewati</i></p>
+            <p>
+                <i><b>*</b> = Jika sudah ditambahkan sebelumnya, maka tahap ini bisa dilewati</i>
+                <br>
+                <i><b>**</b> = Pada section event, pilih salah satu event terlebih dahulu dengan mengklik tombol detail</i>
+            </p>
 
             <hr>
 
@@ -66,10 +71,15 @@
 
             <p>Setelah event sudah terlaksana, ikuti petunjuk berikut!</p>
             <ol>
+                <li>Masukkan laporan akhir event pada section event.<b>**</b></li>
                 <li>Masukkan dokumentasi berupa foto atau video (foto maksimal 2 dan link video maksimal 1 ). Jangan lupa pilih event yang bersangkutan.</li>
                 <li>Jika ingin mengetik ringkasan yang ada pada event, masukkan ke dalam bagian posts.</li>
             </ol>
-            </p>
+            <p><i><b>**</b> = Pada section event, pilih salah satu event terlebih dahulu dengan mengklik tombol detail</i></p>
+
+            <hr>
+
+            <p>Semua pengguna yang terdaftar hanya pihak yang bersangkutan dengan Pradita University. <br>Semua pengguna baru akan didaftarkan oleh pihak admin Pradita University!</p>
         </div>
     </div>
     <!-- Kuliah Tamu End -->

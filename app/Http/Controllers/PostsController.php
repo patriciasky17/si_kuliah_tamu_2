@@ -16,13 +16,40 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-            $posts = Posts::filter(request(['search']))->paginate(5)->withQueryString();
+        $search = $request->get('search');
+        if ($search) {
+            $posts = DB::select('SELECT DISTINCT(dokumentasi.id_dokumentasi), foto.*, event.*, posts.*
+            FROM dokumentasi
+            INNER JOIN foto ON foto.id_foto =
+            (SELECT foto.id_foto FROM foto WHERE dokumentasi.id_dokumentasi = foto.id_dokumentasi ORDER BY foto.id_dokumentasi ASC LIMIT 1 ), event, posts, posts_dan_dokumentasi WHERE event.id_event = dokumentasi.id_event AND posts_dan_dokumentasi.id_dokumentasi = dokumentasi.id_dokumentasi AND posts.id_posts = posts_dan_dokumentasi.id_posts AND ( judul LIKE ? OR ringkasan LIKE ? OR author LIKE ? ) ORDER BY dokumentasi.id_dokumentasi ASC', ['%' . $search . '%', '%' . $search . '%', '%' . $search . '%']);
+            $total = count($posts);
+            $per_page = 5;
+            $current_page = $request->input("page") ?? "1";
+            $starting_point = ($current_page * $per_page) - $per_page;
+            $posts = array_slice($posts, $starting_point, $per_page);
+            $paginate = new \Illuminate\Pagination\LengthAwarePaginator($posts, $total, $per_page, $current_page, ['path' => $request->url(), 'query' => $request->query()]);
             return view('dashboard-admin.posts.detail-article.search-article',[
                 'title' => 'Data Posts - Pradita University\'s Guest Lecturers',
-                'posts' => $posts,
+                'posts' => $paginate,
             ]);
+        }
+        $posts = DB::select('SELECT DISTINCT(dokumentasi.id_dokumentasi), foto.*, event.*, posts.*
+        FROM dokumentasi
+        INNER JOIN foto ON foto.id_foto =
+        (SELECT foto.id_foto FROM foto WHERE dokumentasi.id_dokumentasi = foto.id_dokumentasi ORDER BY foto.id_dokumentasi ASC LIMIT 1 ), event, posts, posts_dan_dokumentasi WHERE event.id_event = dokumentasi.id_event AND posts_dan_dokumentasi.id_dokumentasi = dokumentasi.id_dokumentasi AND posts.id_posts = posts_dan_dokumentasi.id_posts ORDER BY dokumentasi.id_dokumentasi ASC');
+        $total = count($posts);
+        $per_page = 5;
+        $current_page = $request->input("page") ?? "1";
+        $starting_point = ($current_page * $per_page) - $per_page;
+        $posts = array_slice($posts, $starting_point, $per_page);
+        $paginate = new \Illuminate\Pagination\LengthAwarePaginator($posts, $total, $per_page, $current_page, ['path' => $request->url(), 'query' => $request->query()]);
+
+        return view('dashboard-admin.posts.detail-article.search-article',[
+            'title' => 'Data Posts - Pradita University\'s Guest Lecturers',
+            'posts' => $paginate,
+        ]);
     }
 
     /**
@@ -51,7 +78,7 @@ class PostsController extends Controller
             'judul' => 'required',
             'ringkasan' => 'required',
             'author' => 'required',
-            'id_event' => 'required',
+            'id_event[]' => 'required',
         ]);
         $posts = [
             'judul' => $validatedData['judul'],

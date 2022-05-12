@@ -17,56 +17,45 @@
                 <h1 class="judul">DOKUMENTASI</h1>
             </div>
 
-        <!-- Documentation Picture Starts Here -->
-        <div class="zoom-gallery">
-            <h1 class="jenis-kuliah-tamu">Kuliah Tamu - {{ $dokumentasi[0]->nama_event }}</h1>
-            <div class="row">
-                <!-- Picture 1 -->
-                <div class="col-md-6 col-sm-12 col-6">
-                    <a href="https://www.pradita.ac.id/assets/img/post/image/sport-court-pradita-university__rHK11.jpg" class="foto-kuliahtamu" data-source="https://www.pradita.ac.id/student-facilities" title="Kuliah Tamu 1" style="width:193px;height:125px;">
-                        <img src="https://www.pradita.ac.id/assets/img/post/image/sport-court-pradita-university__rHK11.jpg" class="foto-dokumentasi">
-                    </a>
+            <!-- Documentation Picture Starts Here -->
+            <div class="zoom-gallery">
+                <h1 class="jenis-kuliah-tamu">Kuliah Tamu - {{ $dokumentasi[0]->nama_event }}</h1>
+                <div class="row">
+                    @if (count($dokumentasi) > 1)
+                        @forelse ($dokumentasi as $d)
+                        <div class="col-md-6 col-sm-12 col-12">
+                            <a href="{{ $d->foto }}" class="foto-kuliahtamu" data-source="https://www.pradita.ac.id/student-facilities" title="Kuliah Tamu {{ $loop->iteration }}" style="width:193px;height:125px;">
+                                <img src="{{ $d->foto }}" class="foto-dokumentasi">
+                            </a>
+                            <a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.index') }}?file={{ $d->foto }}">Download Foto {{ $loop->iteration }}</a>
+                        </div>
+                        @empty
+                        @endforelse
+                    @else
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <a href="{{ $d->foto }}" class="foto-kuliahtamu" data-source="https://www.pradita.ac.id/student-facilities" title="Kuliah Tamu {{ $loop->iteration }}" style="width:193px;height:125px;">
+                            <img src="{{ $d->foto }}" class="foto-dokumentasi">
+                        </a>
+                        <a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.index') }}?file={{ $d->foto }}">Download Foto {{ $loop->iteration }}</a>
+                    </div>
+                    @endif
+
                 </div>
-                <!-- End of Picture 1 -->
+            </div>
 
-                <!-- Picture 2 -->
-                <div class="col-md-6 col-sm-12 col-6">
-                    <a href="https://www.pradita.ac.id/assets/front/images/new/univ-pradita-footer.jpg" class="foto-kuliahtamu" data-source="https://www.pradita.ac.id/student-facilities" title="Kuliah Tamu 1" style="width:82px;height:125px;">
-                        <img src="https://www.pradita.ac.id/assets/front/images/new/univ-pradita-footer.jpg" class="foto-dokumentasi">
-                    </a>
+            @if ($dokumentasi[0]->video != null)
+            <div class="col-md-12 col-sm-12" style="margin-top: 30px">
+                <form class="button-download">
+                    <a href="{{ $dokumentasi[0]->video }}" download class="btn btn-outline-warning w-100" role="button" aria-pressed="true">Download Video Dokumentasi</a>
+                </form>
+            </div>
+            @endif
+
+            <div class="button" style="margin-top: 30px">
+                <div class="col-12 button-back-to-article" style="margin-bottom : 20px;">
+                    <a><button class="button-for-back" onclick="history.back()">Back</button></a>
                 </div>
-            <!-- End of Picture 2 -->
             </div>
-        </div>
-        <!-- Documentation Picture Ends Here -->
-
-        <!-- Download Button Starts Here -->
-        <div class="row">
-            <div class="col-md-6 col-sm-12 col-6">
-                <form class="button-download">
-                    <a href="/dokumentasi2/assets/praditaa.jpg" download class="btn btn-outline-warning" role="button" aria-pressed="true">Download Foto Dokumentasi 1</a>
-                </form>
-            </div>
-
-            <div class="col-md-6 col-sm-12 col-6">
-                <form class="button-download">
-                    <a href="/dokumentasi2/assets/praditaa.jpg" download class="btn btn-outline-warning" role="button" aria-pressed="true">Download Foto Dokumentasi 2</a>
-                </form>
-            </div>
-
-            <div class="col-md-12 col-sm-12">
-                <form class="button-download">
-                    <a href="/assets-user/pradita.mp4" download class="btn btn-outline-warning" role="button" aria-pressed="true">Download Video Dokumentasi</a>
-                </form>
-            </div>
-
-            <div class="col-md-12 col-sm-12">
-                <form class="button-back">
-                    <a href="documentation.html" class="btn btn-outline-warning" class="back" role="button" aria-pressed="true">Back</a>
-                </form>
-            </div>
-        </div>
-        <!-- Download Button Ends Here -->
         </div>
     </div>
 @endsection

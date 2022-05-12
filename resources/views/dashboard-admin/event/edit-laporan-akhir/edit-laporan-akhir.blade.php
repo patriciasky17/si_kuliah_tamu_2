@@ -8,7 +8,13 @@
                 <div class="bg-light rounded h-100 p-4">
 
                     {{-- Jika laporan akhir sudah ada --}}
-                    <h6 class="mb-4">Edit Laporan Akhir Event - <span class="nama-event">{{ $event->nama_event }}</span></h6>
+                    <h6 class="mb-4">
+                        @if ($event->laporan_akhir != NULL)
+                            Edit Laporan Akhir Event
+                        @else
+                            Input Laporan Akhir Event
+                        @endif
+                        - <span class="nama-event">{{ $event->nama_event }}</span></h6>
                     <form action="{{ route('event.updateLaporanAkhir', $event->id_event) }}" method='POST' enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
@@ -18,7 +24,7 @@
                                 <input class="form-control" type="hidden" name='oldlaporan_akhir' value='{{ $event->laporan_akhir != NULL ? $event->laporan_akhir : '' }}'>
                                 <input class="form-control" type="file" id="inputLaporanAkhirEvent" name="laporan_akhir">
                                 @if ($event->laporan_akhir)
-                                    {{ 'Ini adalah dokumen yang telah di upload ' . $event->laporan_akhir }}
+                                    {{ 'Dokumen laporan akhir yang diupload sebelumnya : ' . $event->laporan_akhir }}
                                 @endif
                                 @error('laporan_akhir')
                                     <p class="text-danger"><i>{{ $message }}</i></p>
@@ -26,7 +32,13 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-outline-warning m-2 float-end">Update Laporan Akhir</button>
+                        <button type="submit" class="btn btn-outline-warning m-2 float-end">
+                            @if ($event->laporan_akhir != NULL)
+                            Update Laporan Akhir
+                            @else
+                            Input Laporan Akhir
+                            @endif
+                            </button>
                     </form>
 
                 </div>

@@ -169,13 +169,21 @@
 
                         <dt class="col-sm-4">Laporan Akhir</dt>
                         <dd class="col-sm-8">
-                            <a class="btn btn-sm btn-outline-info" href="{{ route("event.editLaporanAkhir", $singleEvent->id_event) }}">Input/Edit</a>
-                            <a class="btn btn-sm btn-outline-warning" href="{{ route('download.pdfLaporanAkhir',substr($singleEvent->laporan_akhir, 14)) }}">Download</a>
+                            <a class="btn btn-sm btn-outline-info" href="{{ route("event.editLaporanAkhir", $singleEvent->id_event) }}">
+                                @if ($singleEvent->laporan_akhir == null)
+                                    Input Laporan Akhir
+                                @else
+                                    Edit Laporan Akhir
+                                @endif
+                            </a>
+                            @if ($singleEvent->laporan_akhir != null)
+                            <a class="btn btn-sm btn-outline-warning" href="{{ route('download.index') }}?file={{  $singleEvent->laporan_akhir }}">Download</a>
+                            @endif
                         </dd>
 
                         <dt class="col-sm-4">Proposal</dt>
                         <dd class="col-sm-8">
-                            <a class="btn btn-sm btn-outline-warning" href="{{ route('download.pdfProposal',substr($singleEvent->file_proposal, 9)) }}">Download</a>
+                            <a class="btn btn-sm btn-outline-warning" href="{{ route('download.index') }}?file={{  $singleEvent->file_proposal }}">Download</a>
                         </dd>
                     </dl>
                 </div>
@@ -183,14 +191,14 @@
                     <h6 class="text-center" style="margin-bottom: 20px;">Background</h6>
                     <div class="group-contains d-flex justify-content-center">
                         {{-- <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset("storage/" . $singleEvent->background) }}"> --}}
-                        {{-- <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset("penyimpanan/background/" . $singleEvent->background) }}"> --}}
+                        <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset($singleEvent->background) }}">
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6" style="margin-top:30px">
                     <h6 class="text-center" style="margin-bottom: 20px;">Flyer</h6>
                     <div class="group-contains d-flex justify-content-center">
                         {{-- <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset("storage/" . $singleEvent->flyer) }}"> --}}
-                        {{-- <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset("penyimpanan/flyer/" . $singleEvent->flyer) }}"> --}}
+                        <img class="img-fluid  mx-auto  bg-flyer-photo" src="{{ asset($singleEvent->flyer) }}">
                     </div>
                 </div>
             </div>

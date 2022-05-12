@@ -42,10 +42,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <img src = "https://file.maukuliah.id/img/gallery/031067/maukuliah-1635218473.jpg" alt="foto" class="article-photo">
+                        <img src = "{{ $p->foto }}" alt="foto" class="article-photo">
                         <div class="article-detail">
                             <p class = "tanggal">{{ date("M-d-Y",strtotime($p->waktu_publikasi)) }}</p>
                             <p class = "judul">{{ $p->judul }}</p>
+                            <p class = "author"> {{ "Penulis : " . $p->author }}</p>
                             <p class = "isi">{{ Str::limit($p->ringkasan, 140, ' ...') }}</p>
                         </div>
                     </div>

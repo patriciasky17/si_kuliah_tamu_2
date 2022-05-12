@@ -100,7 +100,7 @@
                         <div class="carousel-inner">
                             @forelse ($singleDocumentation as $d)
                             <div class="carousel-item {{ $loop->iteration == 1 ? 'active' : '' }}">
-                                <img class="img-fluid mx-auto documentation-photo" src="{{ asset("storage/" . $d->foto) }}">
+                                <img class="img-fluid mx-auto documentation-photo" src="{{ asset($d->foto) }}">
                             </div>
                             @empty
 
@@ -126,18 +126,30 @@
                             <dt class="col-sm-4">Foto Dokumentasi</dt>
                             <dd class="col-sm-8 d-flex">
                                 @forelse ($singleDocumentation as $d)
-                                    <a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.photoDokumentasi',substr($d->foto,5)) }}">Download Foto {{ $loop->iteration }}</a>
+                                    <a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.index') }}?file={{ $d->foto }}">Download Foto {{ $loop->iteration }}</a>
                                 @empty
                                 @endforelse
                             </dd>
 
                             <dt class="col-sm-4">Video Dokumentasi</dt>
-                            <dd class="col-sm-8"><a class="btn btn-sm btn-outline-warning w-100" href="{{ $singleDocumentation[0]->video }}">Show Video</a></dd>
+                            <dd class="col-sm-8">
+                                @if ($singleDocumentation[0]->video == null)
+                                <p>Belum ada video yang dimasukkan</p>
+                                @else
+                                <a class="btn btn-sm btn-outline-warning w-100" href="{{ $singleDocumentation[0]->video }}">Show Video</a>
+                                @endif
+                            </dd>
 
                             <dt class="col-sm-12" style="margin-bottom: 30px; margin-top: 30px;"></dt>
 
                             <dt class="col-sm-4">Feedback</dt>
-                            <dd class="col-sm-8"><a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.pdfDokumentasi', substr($singleDocumentation[0]->feedback,12)) }}">Download PDFFeedback</a></dd>
+                            <dd class="col-sm-8">
+                                @if ($singleDocumentation[0]->feedback == null)
+                                    -
+                                @else
+                                <a class="btn btn-sm btn-outline-warning w-100" href="{{ route('download.index') }}?file={{ $singleDocumentation[0]->feedback }}">Download Feedback</a>
+                                @endif
+                            </dd>
                         </dl>
                     </div>
                 </div>

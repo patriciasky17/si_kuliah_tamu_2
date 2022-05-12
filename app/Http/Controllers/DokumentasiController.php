@@ -66,30 +66,50 @@ class DokumentasiController extends Controller
             'foto_2' => 'nullable|file|mimes:jpeg,png,jpg|max:3072',
             'feedback' => 'nullable|mimes:pdf,docx,doc|max:2048',
         ]);
+
         $documentation = [
             'id_event' => $validatedData['id_event'],
             'video' => $validatedData['video'],
         ];
+
         if($request->feedback){
-            $file = $request->file('feedback')->store('dokumentasi');
-            $documentation['feedback'] = $file;
-        }
+            $feedback = $request->file('feedback');
+            $feedback_name = $feedback->getClientOriginalName();
+            $feedback->move(public_path('/penyimpanan/feedback'), $feedback_name);
+            $feedback_path = "/penyimpanan/feedback/" . $feedback_name;
+            $validatedData['feedback'] = $feedback_path;
+            $documentation['feedback'] = $validatedData['feedback'];
+        };
+
 
         $idDokumentasi = Dokumentasi::create($documentation)->id;
         if($request->foto_1){
-        $foto1 = [
-            'id_dokumentasi' => $idDokumentasi,
-            'foto' => $request->file('foto_1')->store('foto')
-        ];
-        Foto::create($foto1);
-        }
+            $foto_1 = $request->file('foto_1');
+            $foto_1_name = $foto_1->getClientOriginalName();
+            $foto_1->move(public_path('/penyimpanan/dokumentasi'), $foto_1_name);
+            $foto_1_path = "/penyimpanan/dokumentasi/" . $foto_1_name;
+
+            $foto1 = [
+                'id_dokumentasi' => $idDokumentasi,
+                'foto' => $foto_1_path
+            ];
+            Foto::create($foto1);
+        };
+
+
         if($request->foto_2){
-        $foto2 = [
-            'id_dokumentasi' => $idDokumentasi,
-            'foto' => $request->file('foto_2')->store('foto')
-        ];
-        Foto::create($foto2);
-        }
+            $foto_2 = $request->file('foto_2');
+            $foto_2_name = $foto_2->getClientOriginalName();
+            $foto_2->move(public_path('/penyimpanan/dokumentasi'), $foto_2_name);
+            $foto_2_path = "/penyimpanan/dokumentasi/" . $foto_2_name;
+
+            $foto2 = [
+                'id_dokumentasi' => $idDokumentasi,
+                'foto' => $foto_2_path
+            ];
+            Foto::create($foto2);
+        };
+
         return redirect()->intended(route('documentation.index'))->with('success', 'Documentation has been successfully added');
     }
 
@@ -141,38 +161,73 @@ class DokumentasiController extends Controller
             'oldfoto_2' => 'nullable',
             'oldfeedback' => 'nullable'
         ]);
+
         $documentation = [
             'id_event' => $validatedData['id_event'],
             'video' => $validatedData['video'],
         ];
-        if($request->feedback != null){
-            $file = $request->file('feedback')->store('dokumentasi');
-            $documentation['feedback'] = $file;
-            if($validatedData['oldfeedback']){
-                Storage::delete($validatedData['oldfeedback']);
-            }
-        }
-        if($request->foto_1 != null){
-            $foto1 = [
-                'id_dokumentasi' => $id,
-                'foto' => $request->file('foto_1')->store('foto')
-            ];
-            Foto::where('id_dokumentasi', $id)->update($foto1);
-            if($validatedData['oldfoto_1']){
-                Storage::delete($validatedData['oldfoto_1']);
+
+        if($request->file('feedback')){
+            $feedback = $request->file('feedback');
+            $feedback_name = $feedback->getClientOriginalName();
+            $feedback->move(public_path('/penyimpanan/feedback'), $feedback_name);
+            $feedback_path = "/penyimpanan/feedback/" . $feedback_name;
+            $validatedData['feedback'] = $feedback_path;
+            $documentation['feedback'] = $validatedData['feedback'];
+            if($request->oldfeedback){
+                $oldfeedback = $request->oldfeedback;
+                unlink(public_path($oldfeedback));
             }
         }
 
-        if($request->foto_2 != null){
-            $foto2 = [
+        // $idDokumentasi = Dokumentasi::where('id_dokumentasi', $id)->update($documentation)->id;
+
+        if($request->foto_1){
+            $foto_1 = $request->file('foto_1');
+            $foto_1_name = $foto_1->getClientOriginalName();
+            $foto_1->move(public_path('/penyimpanan/dokumentasi'), $foto_1_name);
+            $foto_1_path = "/penyimpanan/dokumentasi/" . $foto_1_name;
+            $foto1 = [
                 'id_dokumentasi' => $id,
-                'foto' => $request->file('foto_2')->store('foto')
+                'foto' => $foto_1_path
             ];
-            Foto::where('id_dokumentasi', $id)->update($foto2);
-            if($validatedData['oldfoto_2']){
-                Storage::delete($validatedData['oldfoto_2']);
+            Foto::where('id_dokumentasi', $id)->where('id_foto', $request->id_foto_1)->update($foto1);
+
+            if($request->oldfoto_1){
+                $oldfoto_1 = $request->oldfoto_1;
+                unlink(public_path($oldfoto_1));
             }
         }
+
+
+        if($request->id_foto_2){
+            $foto_2 = $request->file('foto_2');
+            $foto_2_name = $foto_2->getClientOriginalName();
+            $foto_2->move(public_path('/penyimpanan/dokumentasi'), $foto_2_name);
+            $foto_2_path = "/penyimpanan/dokumentasi/" . $foto_2_name;
+            $foto2 = [
+                'id_dokumentasi' => $id,
+                'foto' => $foto_2_path
+            ];
+            // dd($foto2);
+            Foto::where('id_dokumentasi', $id)->where('id_foto', $request->id_foto_2 )->update($foto2);
+            if($request->oldfoto_2){
+                $oldfoto_2 = $request->oldfoto_2;
+                unlink(public_path($oldfoto_2));
+            }
+        } else if($request->foto_2){
+            $foto_2 = $request->file('foto_2');
+            $foto_2_name = $foto_2->getClientOriginalName();
+            $foto_2->move(public_path('/penyimpanan/dokumentasi'), $foto_2_name);
+            $foto_2_path = "/penyimpanan/dokumentasi/" . $foto_2_name;
+
+            $foto2 = [
+                'id_dokumentasi' => $id,
+                'foto' => $foto_2_path
+            ];
+            Foto::create($foto2);
+        };
+
         Dokumentasi::where('id_dokumentasi', $id)->update($documentation);
         return redirect()->intended(route('documentation.index'))->with('success', 'Documentation has been successfully updated');
     }
@@ -186,13 +241,17 @@ class DokumentasiController extends Controller
     public function destroy($id)
     {
         $documentation = Dokumentasi::where('id_dokumentasi', $id);
+        // dd($documentation->first()->feedback);
         $foto = Foto::where('id_dokumentasi', $id)->get();
-        foreach($foto as $f){
-            Storage::delete($f->foto);
-        }
+
         if($documentation->first()->feedback != null){
-            Storage::delete($documentation->first()->feedback);
+            unlink(public_path($documentation->first()->feedback));
         }
+
+        foreach($foto as $f){
+            unlink(public_path($f->foto));
+        }
+
         $documentation->delete();
         return redirect()->intended(route('documentation.index'))->with('success', 'Documentation has been successfully deleted');
     }

@@ -1,4 +1,8 @@
 @extends('website-for-user.partials-main.main')
+@section('css')
+<link rel="stylesheet" href="/assets-user/css/style-presensi.css">
+@endsection
+
 @section("main")
 <div class="container" style="margin-top: 150px;">
     <h5>PRESENSI</h5>
@@ -94,6 +98,12 @@
 
         </div>
     </form>
+
+    <div class="button">
+        <div class="col-12 button-back-to-article" style="margin-bottom : 20px;">
+            <a><button class="button-for-back" onclick="history.back()">Back</button></a>
+        </div>
+    </div>
 </div>
 <!-- End of Documentation -->
 @endsection

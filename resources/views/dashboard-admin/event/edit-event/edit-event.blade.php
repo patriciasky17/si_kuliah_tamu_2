@@ -44,7 +44,7 @@
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
                                 @if ($event[0]->background)
-                                    {{ 'Ini adalah fotonya yang telah di upload ' . $event[0]->background }}
+                                    {{ 'Foto background yang diupload sebelumnya : ' . $event[0]->background }}
                                 @endif
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
                                 @if ($event[0]->flyer)
-                                    {{ 'Ini adalah fotonya yang telah di upload ' . $event[0]->flyer }}
+                                    {{ 'Foto flyer yang diupload sebelumnya :  ' . $event[0]->flyer }}
                                 @endif
                             </div>
                         </div>

@@ -63,11 +63,18 @@ class ProposalController extends Controller
             'file_proposal' => 'required|mimes:pdf,docx,doc|max:2048'
         ]);
 
+        $file_proposal = $request->file('file_proposal');
+        $file_proposal_name = $file_proposal->getClientOriginalName();
+        // dd($file_proposal->move(public_path('/penyimpanan/proposal'), $file_proposal_name)->openFile());
+        $file_proposal->move(public_path('/penyimpanan/proposal'), $file_proposal_name);
+        $proposal_path = "/penyimpanan/proposal/" . $file_proposal_name;
+        $validatedData['file_proposal'] = $proposal_path;
+
         $proposalAwal = [
             'mata_kuliah' => $validatedData['mata_kuliah'],
             'latar_belakang' => $validatedData['latar_belakang'],
             'tujuan_kegiatan' => $validatedData['tujuan_kegiatan'],
-            'file_proposal' => $request->file('file_proposal')->store('proposal'),
+            'file_proposal' => $validatedData['file_proposal'],
             'waktu_pengunggahan' => Carbon::now(),
         ];
 
@@ -126,13 +133,19 @@ class ProposalController extends Controller
             'tujuan_kegiatan' => $validatedData['tujuan_kegiatan'],
         ];
 
-        if($request->file_proposal != null){
-            $proposalAwal['file_proposal'] = $request->file('file_proposal')->store('proposal');
-            if($validatedData['oldfile_proposal']){
-                Storage::delete($validatedData['oldfile_proposal']);
+        if($request->file('file_proposal')){
+            $file_proposal = $request->file('file_proposal');
+            $file_proposal_name = $file_proposal->getClientOriginalName();
+            $file_proposal->move(public_path('/penyimpanan/proposal'), $file_proposal_name);
+
+            $file_proposal_path = "/penyimpanan/proposal/" . $file_proposal_name;
+            $validatedData['file_proposal'] = $file_proposal_path;
+            $proposalAwal['file_proposal'] = $validatedData['file_proposal'];
+            if($request->oldfile_proposal){
+                $oldfile_proposal = $request->oldfile_proposal;
+                unlink(public_path($oldfile_proposal));
             }
         }
-
 
         Proposal::where('id_proposal',$id)->update($proposalAwal);
         return redirect()->intended(route('proposal.index'))->with('success','Proposal has been successfully updated');
@@ -147,8 +160,9 @@ class ProposalController extends Controller
     public function destroy($idProposal)
     {
         $proposal = Proposal::where('id_proposal', $idProposal)->get()->first();
+        unlink(public_path($proposal->file_proposal));
         // dd($proposal);
-        Storage::delete($proposal->file_proposal);
+        // Storage::delete($proposal->file_proposal);
         Proposal::where('id_proposal', $idProposal)->delete();
         return redirect()->intended(route('proposal.index'))->with('success','Proposal has been successfully deleted');
     }

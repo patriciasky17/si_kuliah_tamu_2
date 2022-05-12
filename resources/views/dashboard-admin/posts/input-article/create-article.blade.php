@@ -61,11 +61,10 @@
                                         </option>
                                     @empty
                                     @endforelse
-
-                                    @error('id_event')
-                                        {{ $message }}
-                                    @enderror
                                 </select>
+                                @error('id_event[]')
+                                    <p class="text-danger"><i>{{ $message }}</i></p>
+                                @enderror
                             </div>
                         </div>
                         <button type="submit" class="btn btn-outline-warning m-2 float-end w-100">Submit Dokumentasi</button>

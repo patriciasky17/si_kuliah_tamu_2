@@ -45,12 +45,12 @@
                             <div class="col-sm-10">
                                 <input type="hidden" class="form-control" id="inputFileProposal" name="oldfile_proposal" value="{{ $proposal->file_proposal != NULL ? $proposal->file_proposal : ''  }}">
                                 <input class="form-control" type="file" id="inputFileProposal" name="file_proposal">
+                                @if ($proposal->file_proposal != null)
+                                    {{ 'Proposal yang telah diupload sebelumnya :' . $proposal->file_proposal }}
+                                @endif
                                 @error('file_proposal')
                                     <p class="text-danger"><i>{{ $message }}</i></p>
                                 @enderror
-                                @if ($proposal->file_proposal)
-                                    {{ 'Ini adalah fotonya yang telah di upload ' . $proposal->file_proposal }}
-                                @endif
                             </div>
 
                         </div>

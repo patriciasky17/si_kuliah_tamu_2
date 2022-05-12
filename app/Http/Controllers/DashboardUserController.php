@@ -18,7 +18,7 @@ class DashboardUserController extends Controller
 
         // dd(auth()->user());
         return view('website-for-user.about.index',[
-            'title' => 'Dashboard Admin - Pradita University\'s Guest Lecturers',
+            'title' => 'Dashboard User - Pradita University\'s Guest Lecturers',
             'event' => $event,
             'mahasiswa' => $mahasiswa,
             'posts' => $posts,

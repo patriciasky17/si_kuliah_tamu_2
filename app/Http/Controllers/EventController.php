@@ -78,16 +78,19 @@ class EventController extends Controller
             'id_proposal' => 'required',
         ]);
 
-        // $validatedData['background'] = $request->file('background')->store('background');
-        // $validatedData['flyer'] = $request->file('flyer')->store('flyer');
+        //Source : https://www.codegrepper.com/code-examples/php/laravel+8+upload+file+to+public+folder
+        $background = $request->file('background');
+        $background_name = $background->getClientOriginalName();
+        $background->move(public_path('/penyimpanan/background'), $background_name);
+        $background_path = "/penyimpanan/background/" . $background_name;
+        $validatedData['background'] = $background_path;
 
-        // $validatedData['background'] = $request->file('background');
-        // $background_name = $validatedData['background']->getClientOriginalName();
-        // $validatedData['background']->move(public_path('/penyimpanan/background'), $background_name);
+        $flyer = $request->file('flyer');
+        $flyer_name = $flyer->getClientOriginalName();
+        $flyer->move(public_path('/penyimpanan/flyer'), $flyer_name);
+        $flyer_path = "/penyimpanan/flyer/" . $flyer_name;
+        $validatedData['flyer'] = $flyer_path;
 
-        // $validatedData['flyer'] = $request->file('flyer');
-        // $flyer_name = $validatedData['flyer']->getClientOriginalName();
-        // $validatedData['flyer']->move(public_path('/penyimpanan/flyer'), $flyer_name);
 
         Event::create($validatedData);
         return redirect()->route('event.index')->with('success','Data Event has been added successfully');
@@ -184,22 +187,6 @@ class EventController extends Controller
             'oldflyer' => 'required'
         ]);
 
-        if($request->background != null){
-            $file = $request->file('background')->store('background');
-            $event['background'] = $file;
-            if($validatedData['oldbackground'] != null){
-                Storage::delete($validatedData['oldbackground']);
-            }
-        }
-
-        if($request->flyer != null){
-            $file = $request->file('flyer')->store('flyer');
-            $event['flyer'] = $file;
-            if($validatedData['oldflyer'] != null){
-                Storage::delete($validatedData['oldflyer']);
-            }
-        }
-
         $event = [
             'nama_event' => $validatedData['nama_event'],
             'cara_pelaksanaan' => $validatedData['cara_pelaksanaan'],
@@ -212,6 +199,32 @@ class EventController extends Controller
             'id_proposal' => $validatedData['id_proposal'],
         ];
 
+        if($request->file('background')){
+            $background = $request->file('background');
+            $background_name = $background->getClientOriginalName();
+            $background->move(public_path('/penyimpanan/background'), $background_name);
+            $background_path = "/penyimpanan/background/" . $background_name;
+            $validatedData['background'] = $background_path;
+            $event['background'] = $validatedData['background'];
+            if($request->oldbackground){
+                $oldbackground = $request->oldbackground;
+                unlink(public_path($oldbackground));
+            }
+        }
+
+        if($request->file('flyer')){
+            $flyer = $request->file('flyer');
+            $flyer_name = $flyer->getClientOriginalName();
+            $flyer->move(public_path('/penyimpanan/flyer'), $flyer_name);
+            $flyer_path = "/penyimpanan/flyer/" . $flyer_name;
+            $validatedData['flyer'] = $flyer_path;
+            $event['flyer'] = $validatedData['flyer'];
+            if($request->oldflyer){
+                $oldflyer = $request->oldflyer;
+                unlink(public_path($oldflyer));
+            }
+        }
+
         Event::where('id_event', $id)->update($event);
         return redirect()->route('event.index')->with('success', 'Data Event has been updated successfully');
 
@@ -223,12 +236,30 @@ class EventController extends Controller
             'laporan_akhir' => 'required|mimes:pdf,docx,doc|max:2048',
             'oldlaporan_akhir' => 'nullable'
         ]);
-        $proposal = [
-            'laporan_akhir' => $request->file('laporan_akhir')->store('laporan_akhir'),
-            // ->getClientOriginalName(),
-        ];
-        Storage::delete($request->oldlaporan_akhir);
-        Event::where('id_event',$id)->update($proposal);
+
+        // $proposal = [
+        //     'laporan_akhir' => $request->file('laporan_akhir')->store('laporan_akhir'),
+        //     // ->getClientOriginalName(),
+        // ];
+
+        if($request->file('laporan_akhir')){
+            $laporan_akhir = $request->file('laporan_akhir');
+            $laporan_akhir_name = $laporan_akhir->getClientOriginalName();
+            $laporan_akhir->move(public_path('/penyimpanan/laporan_akhir'), $laporan_akhir_name);
+            $laporan_akhir_path = "/penyimpanan/laporan_akhir/" . $laporan_akhir_name;
+            $validatedData['laporan_akhir'] = $laporan_akhir_path;
+            $laporan_akhir_update = [
+                'laporan_akhir' => $validatedData['laporan_akhir']
+            ];
+            if($request->oldlaporan_akhir){
+                $oldlaporan_akhir = $request->oldlaporan_akhir;
+                unlink(public_path($oldlaporan_akhir));
+            }
+        }
+
+        // dd($laporan_akhir_update);
+        // Storage::delete($request->oldlaporan_akhir);
+        Event::where('id_event',$id)->update($laporan_akhir_update);
         return redirect()->route('event.index')->with('success', 'Data Laporan Akhir has been updated successfully');
     }
 
@@ -241,10 +272,11 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::where('id_event', $id)->get()->first();
-        Storage::delete($event->background);
-        Storage::delete($event->flyer);
+        unlink(public_path($event->background));
+        unlink(public_path($event->flyer));
+
         if($event->laporan_akhir != null){
-            Storage::delete($event->laporan_akhir);
+            unlink(public_path($event->laporan_akhir));
         }
         Event::where('id_event', $id)->delete();
         return redirect()->route('event.index')->with('success', 'Data Event has been deleted successfully');

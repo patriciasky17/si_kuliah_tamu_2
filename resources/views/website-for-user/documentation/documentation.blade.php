@@ -21,9 +21,9 @@
 
             @foreach ($dokumentasi as $d)
                 <div class="col-md-6 col-sm-12 col-12">
-                    <a href="documentation-inside.html" class="design-kt">
+                    <a href="/user/documentation/{{ $d->id_dokumentasi }}" class="design-kt">
                         <p style="text-align:justify; width:90%"><span class="nama_event">{{ $d->nama_event }}</span></p>
-                        <img src = "https://career.summarecon.com/public/images/post/big/executive-secretary-to-pradita-institute.jpg" alt= "foto" class ="documentation-photo">
+                        <img src = "{{ $d->foto }}" alt= "foto" class ="documentation-photo">
                     </a>
                 </div>
             @endforeach
